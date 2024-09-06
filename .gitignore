@@ -1,0 +1,17 @@
+# Archivos de compilación
+bin/
+obj/
+
+# Visual Studio archivos de configuración
+.vs/
+*.csproj.user
+
+# Paquetes NuGet
+packages/
+*.nupkg
+
+db/pgdata/
+wwwroot/
+
+# Configuración de usuario
+appsettings.Development.json

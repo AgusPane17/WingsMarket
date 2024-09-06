@@ -1,0 +1,18 @@
+version: '2.28.1'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports: 
+      - 8080:5432
+    hostname: wmhost
+    container_name: postgres-conteiner
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_DB: "wingsmarketDB"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/data.sql
