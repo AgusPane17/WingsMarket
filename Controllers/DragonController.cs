@@ -5,10 +5,10 @@ using Services.DragonService;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace WingsMarket.Controller;
+namespace WingsMarket.Controllers.DragonController;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[Dragon]")]
 public class DragonController : ControllerBase
 {
     private readonly ILogger<DragonController> _logger;
