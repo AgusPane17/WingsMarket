@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic;
 using WingsMarket.Models.PurchaseModel;
 
 namespace WingsMarket.Models.CustomerModel;
@@ -22,7 +23,7 @@ public class Customer{
     [Required]
     [Phone]
     private string phoneNumberCustomer;
-    List<Purchase> purchases = [];
+    List<Purchase> purchases = new List<Purchase>();
 
     public Customer (string nameCustomer, string lastNameCustomer,string emailCustomer, string phoneNumberCustomer, int ageCustomer){
         this.ageCustomer = ageCustomer;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WingsMarket.Models.DragonModel;
-using Services.DragonService;
+using WingsMarket.Services.DragonService;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -41,7 +41,7 @@ public class DragonController : ControllerBase
             return NotFound();
         }
     }    
-    [HttpPost("Create")]
+    [HttpPost("Create/")]
     public async Task<IActionResult> Create(Dragon newDragon)
     {
         newDragon.id = Guid.NewGuid().ToString();

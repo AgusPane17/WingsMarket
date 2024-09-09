@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection.Metadata.Ecma335;
 
-namespace Services.DragonService;
+namespace WingsMarket.Services.DragonService;
 public class DragonService{
 
     private readonly WingsMarketContext _context; //Falla si lo dejo como un string que no puede ser null
