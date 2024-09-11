@@ -10,8 +10,8 @@ obj/
 packages/
 *.nupkg
 
-db/pgdata/
-wwwroot/
+src/db/pgdata/
+src/wwwroot/
 
 # Configuración de usuario
 appsettings.Development.json

@@ -12,30 +12,35 @@ namespace WingsMarket.Controllers.PurchaseController;
 [Route("[Purcharse]")]
 public class PurchaseController : Controller
 {
-    private readonly ILogger<PurchaseController> logger;
+    private readonly ILogger<PurchaseController> _logger;
 
-    PurchaseService servicePurchase;
-    DragonService serviceDragon;
-    CustomerService serviceCustomer;
+    private readonly PurchaseService _servicePurchase;
+    private readonly DragonService _serviceDragon;
+    private readonly CustomerService _serviceCustomer;
 
     public PurchaseController(PurchaseService servicePurchase, DragonService serviceDragon,CustomerService serviceCustomer, ILogger<PurchaseController> logger){
         
-        this.servicePurchase = servicePurchase;
-        this.serviceDragon = serviceDragon;
-        this.serviceCustomer = serviceCustomer;
-        this.logger = logger;
+        _servicePurchase = servicePurchase;
+        _serviceDragon = serviceDragon;
+        _serviceCustomer = serviceCustomer;
+        _logger = logger;
     }
     [HttpPost("/newPurcharse/idCustomer/idDragon")]
     public async Task<IActionResult> newPurcharse(string idCustomer, string idDragon){
 
         //Aca deberia tener middelware que validen el como son los params traidos para evaluar
         try{
-            var dragon = await serviceDragon.GetById(idDragon);
-            var customer = await serviceCustomer.GetCustomerById(idCustomer);    
+
+
+
+            var dragon = await _serviceDragon.GetById(idDragon);
+            var customer = await _serviceCustomer.GetCustomerById(idCustomer);    
                
-            if (dragon is null || customer is null){
-                
-            }
+            if (dragon is null ) return StatusCode(404, "Dragon is invalid");
+            if (customer is null) return StatusCode(404, "Customer is invalid"); 
+
+            await _servicePurchase.newPurchase(dragon, customer);
+        
         }
         catch (Exception ex){
             return StatusCode(500,$"Error created the purchase. Because: {ex}");

@@ -22,7 +22,16 @@ public class DragonService{
     }
     public async Task<Dragon?> GetById(string id)
     {
-        return await _context.Dragons.AsNoTracking().SingleOrDefaultAsync( p => p.id == id);
+        try
+        {
+            return await _context.Dragons.AsNoTracking().SingleOrDefaultAsync( p => p.id == id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        
         
     }
     public async Task UpdateDragon(string id, Dragon editDragon){

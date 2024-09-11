@@ -8,19 +8,17 @@ using WingsMarket.Services.CustomerService;
 namespace WingsMarket.Controllers.CustomerController;
 
 public class CustomerController : Controller{
-    private readonly ILogger<CustomerController> logger;
-    CustomerService service;
+    private readonly ILogger<CustomerController> _logger;
+    private readonly CustomerService _service;
     public CustomerController (CustomerService service, ILogger<CustomerController> logger)
     {   
-
-        this.service = service;
-        this.logger = logger;
-
+        _service = service;
+        _logger = logger;
     }
 
     [HttpGet("Customer/id")]
     public async Task<IActionResult> GetCustomerById(string id){
-        var customer = await service.GetCustomerById(id);
+        var customer = await _service.GetCustomerById(id);
         if (customer == null)  {
             return NotFound();  
         }
@@ -44,7 +42,7 @@ public class CustomerController : Controller{
                     newCustomer.phoneNumberCustomer,
                     newCustomer.ageCustomer
                 );
-            var response = await service.CreateCustomer(ctm); 
+            var response = await _service.CreateCustomer(ctm); 
             return Ok($"The customer was created with the id: {response.id}");
         }
         catch (InvalidOperationException ex)
