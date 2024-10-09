@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Data.WingsMarketContext;
 
-using Services.DragonService;
+using WingsMarket.Services.DragonService;
+using WingsMarket.Services.CustomerService;
+using WingsMarket.Services.PurchaseService;
 
 
 
@@ -25,6 +27,8 @@ builder.Services.AddDbContext<WingsMarketContext>((options) => {
 });
 
 builder.Services.AddTransient<DragonService>();//Servicio de dragones
+builder.Services.AddTransient<CustomerService>();
+builder.Services.AddTransient<PurchaseService>();
 
 builder.Logging.ClearProviders();//Elimina todos los proveedores de logging existentes.
 builder.Logging.AddConsole(); // Agrega el proveedor de logging para que los mensajes de log se muestren en la consola.

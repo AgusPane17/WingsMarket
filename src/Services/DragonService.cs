@@ -5,6 +5,7 @@ using WingsMarket.Models.DragonModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection.Metadata.Ecma335;
+using System.ComponentModel.DataAnnotations;
 
 namespace WingsMarket.Services.DragonService;
 public class DragonService{
@@ -14,11 +15,26 @@ public class DragonService{
     {
         _context = context;
     }
-    public async Task<Dragon> Create(Dragon newDragon)
-    {
-        await _context.Dragons.AddAsync(newDragon);
-        await _context.SaveChangesAsync();
-        return newDragon;
+    public async Task<Dragon> Create(Dragon newDragon){   
+        try
+        {
+            await _context.Dragons.AddAsync(newDragon);
+            await _context.SaveChangesAsync();
+            return newDragon;
+        }
+        catch (DbUpdateException dbEx)
+        {
+            throw new Exception("Error trying to save dragon to database", dbEx);
+        }
+
+        catch (ValidationException valEx)
+        {
+            throw new Exception("Dragon data validation error", valEx);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An unexpected error occurred", ex);
+        }
     }
     public async Task<Dragon?> GetById(string id)
     {
@@ -26,10 +42,13 @@ public class DragonService{
         {
             return await _context.Dragons.AsNoTracking().SingleOrDefaultAsync( p => p.id == id);
         }
+        catch (ValidationException valEx)
+        {
+            throw new Exception("Dragon data validation error", valEx);
+        }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            return null;
+            throw new Exception("An unexpected error occurred", ex);
         }
         
         

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WingsMarket.Models.DragonRiderModel;
 
 namespace WingsMarket.Models.DragonModel{
@@ -8,16 +9,22 @@ namespace WingsMarket.Models.DragonModel{
 
         public string id {get; set;}
         [Required]
-        [MaxLength(100)]    
+        [StringLength(100)]  
         private string nameDragon  {get; set;}
-        private int ageDragon  {get; set;}
-        private string? colorDragon {get; set;}  
-        private int costRental  {get; set;}
-        private int costSale  {get; set;}        
+        [Range(0,100)]
+        private int? ageDragon  {get; set;}
+        [StringLength(50)]
+        private string colorDragon {get; set;}  
+        [Range(0,Double.MaxValue)]
+        private double costRental  {get; set;}
+        [Range(0,Double.MaxValue)]
+        private double costSale  {get; set;} 
+        [ForeignKey("Dragon")]       
         private DragonRider? hisDragonRider;
 
-        public Dragon(string id,string nameDragon, int ageDragon, string colorDragon, int costRental,int costSale)
+        public Dragon(string id,string nameDragon, int? ageDragon, string colorDragon, double costRental,double costSale)
         {
+             
             this.id = id;
             this.nameDragon = nameDragon;
             this.ageDragon = ageDragon;
@@ -34,7 +41,7 @@ namespace WingsMarket.Models.DragonModel{
             this.costRental =  editDragon.costRental;
             this.costSale = editDragon.costSale;
         }
-        public int getAgeDragon(){
+        public int? getAgeDragon(){
             return ageDragon;
         }
         public string? getNameDragon(){
@@ -43,10 +50,10 @@ namespace WingsMarket.Models.DragonModel{
         public string? getColorDragon(){
             return colorDragon;
         }
-        public int getCostRental(){
-            return ageDragon;
+        public double getCostRental(){
+            return costRental;
         }
-        public int getCostSale(){
+        public double getCostSale(){
             return costSale;
         }
         public DragonRider? GetDragonRider(){
@@ -61,10 +68,10 @@ namespace WingsMarket.Models.DragonModel{
         public void setNameDragon(string nameDragon){
             this.nameDragon = nameDragon;
         }
-        public void setCostSaleDragon(int newCostSale){
+        public void setCostSaleDragon(double newCostSale){
             this.costSale = newCostSale;
         }
-        public void setCostRentalDragon(int newCostRental){
+        public void setCostRentalDragon(double newCostRental){
             this.costRental = newCostRental;
         }
         public void assignDragonRider(DragonRider aDragonRider){

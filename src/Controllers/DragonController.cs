@@ -4,21 +4,20 @@ using WingsMarket.Services.DragonService;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using WingsMarket.DTOs.DragonDTO;
 
 namespace WingsMarket.Controllers.DragonController;
 
 [ApiController]
-[Route("[Dragon]")]
+[Route("Dragon")]
 public class DragonController : ControllerBase
 {
     private readonly ILogger<DragonController> _logger;
     DragonService _service;
     public DragonController (DragonService service, ILogger<DragonController> logger)
     {   
-
         _service = service;
         _logger = logger;
-
     }
     
     [HttpGet]
@@ -42,12 +41,47 @@ public class DragonController : ControllerBase
         }
     }    
     [HttpPost("Create/")]
-    public async Task<IActionResult> Create(Dragon newDragon)
+    public async Task<IActionResult> Create([FromBody] DragonDTO _dragon)
     {
-        newDragon.id = Guid.NewGuid().ToString();
-        var dragon = await _service.Create(newDragon);
+        try{   
+            if (!ModelState.IsValid) {
+                throw new InvalidOperationException($"Failed to create customer. Model state is invalid: {ModelState}");                
+            }
+            if (_dragon is null) {
+                throw new ArgumentNullException(nameof(_dragon), "The customer object is null.");                
+            }
+            _logger.LogInformation($"Creating a Dragon called: {_dragon.nameDragon}");
+            
+            if (_dragon.costRental is null ||
+                _dragon.costSale is null ||
+                _dragon.ageDragon is null ||
+                _dragon.colorDragon is null||
+                _dragon.nameDragon is null 
+            ){
+                throw new ArgumentException("Invalid argument: costRental cannot be null.");
+            }
+            
+            Dragon newDragon = new Dragon(
+                Guid.NewGuid().ToString(),
+                _dragon.nameDragon,
+                _dragon.ageDragon,
+                _dragon.colorDragon,
+                Convert.ToDouble(_dragon.costRental),
+                Convert.ToDouble(_dragon.costSale)
+            );
+            var dragon = await _service.Create(newDragon);
 
-        return CreatedAtAction( nameof( GetById ), new { _id = dragon!.id }, dragon);//hace referencia a crear una accion al hecho de ir y ejecutar otro metodo dentro de la clse controller/ como si fuese una consulta http
+            return CreatedAtAction( nameof( GetById ), new { _id = dragon!.id }, dragon);//hace referencia a crear una accion al hecho de ir y ejecutar otro metodo dentro de la clse controller/ como si fuese una consulta http
+    
+        }
+        catch (ArgumentException ex) {
+            return StatusCode(500,ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,ex.Message);
+        }
+            
     }
 // como id en [HttpPut("Edit/{id}")], el framework enlaza automáticamente el valor del 
 // parámetro de la URL con el parámetro del método de acción. En tu caso, el int id en 

@@ -5,7 +5,7 @@ namespace WingsMarket.Models.DragonRiderModel;
 
 public class DragonRider 
 {
-    public int? id {get; set;}
+    public string? id {get; set;}
     private string nameDragonRider;
     private string lastNameDragonRider;
     private int ageDragonRider;
@@ -19,7 +19,7 @@ public class DragonRider
         this.emailDragonRider = emailDragonRider;
         this.ageDragonRider = ageDragonRider;
     }
-    public DragonRider (int? id, string nameDragonRider, string lastNameDragonRider, string emailDragonRider, int ageDragonRider ){
+    public DragonRider (string? id, string nameDragonRider, string lastNameDragonRider, string emailDragonRider, int ageDragonRider ){
         this.id = id;
         this.nameDragonRider = nameDragonRider;
         this.lastNameDragonRider = lastNameDragonRider;

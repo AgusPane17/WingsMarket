@@ -30,21 +30,18 @@ public class PurchaseController : Controller
 
         //Aca deberia tener middelware que validen el como son los params traidos para evaluar
         try{
-
-
-
             var dragon = await _serviceDragon.GetById(idDragon);
-            var customer = await _serviceCustomer.GetCustomerById(idCustomer);    
-               
             if (dragon is null ) return StatusCode(404, "Dragon is invalid");
+               
+            var customer = await _serviceCustomer.GetCustomerById(idCustomer);    
             if (customer is null) return StatusCode(404, "Customer is invalid"); 
 
-            await _servicePurchase.newPurchase(dragon, customer);
-        
+            await _servicePurchase.newPurchaseAndSave(dragon, customer);
+            return Ok();
         }
         catch (Exception ex){
             return StatusCode(500,$"Error created the purchase. Because: {ex}");
         } 
-        return Ok();
+        
     }
 }
